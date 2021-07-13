@@ -1,0 +1,14 @@
+{
+  "name": "print_tree",
+  "version": "1.0.0",
+  "description": "Домашнее задание Создание NPM пакета для показа дерева",
+  "main": "print_tree.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "print_tree": "./cli.js"
+  }
+}
