@@ -1,2 +1,14 @@
-const pt = require('./hw1/print_tree');
-pt.printTree('./hw1/fixtures.json');
+const homework = process.argv[2];
+
+switch (homework) {
+  case 'hw1':
+    const { hw1 } = require('./hw1');
+    hw1();
+    break;
+  case 'hw2':
+    const { hw2 } = require('./hw2');
+    hw2();
+    break;
+  default:
+    break;
+}
