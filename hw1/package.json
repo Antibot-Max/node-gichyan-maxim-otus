@@ -2,7 +2,7 @@
   "name": "print_tree",
   "version": "1.0.0",
   "description": "Домашнее задание Создание NPM пакета для показа дерева",
-  "main": "print_tree.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
