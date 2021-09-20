@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const prefixes = {
   angle: '└──',
   cross: '├──',
@@ -17,14 +15,8 @@ const treeConnect = (treeStrings, key, obj, curLevel) => {
   const { level, tree } = treeStrings;
   if (curLevel < level) {
     let t = tree.length - 1;
-    while (
-      tree[t][curLevel - 1] === prefixes.space ||
-      tree[t][curLevel - 1] === prefixes.angle
-    ) {
-      tree[t][curLevel - 1] =
-        tree[t][curLevel - 1] === prefixes.space
-          ? prefixes.vert
-          : prefixes.cross;
+    while (tree[t][curLevel - 1] === prefixes.space) {
+      tree[t][curLevel - 1] = prefixes.vert;
       t -= 1;
     }
   }
@@ -54,10 +46,19 @@ const addLeaf = (treeStrings, value) => {
 const leafFromObj = (obj, treeStrings = { tree: [], level: 0, prefix: '' }) => {
   const level = treeStrings.level;
   for (let key in obj) {
+    //Check object format
+    if (key !== 'name' && key !== 'items' && !Array.isArray(obj))
+      throw new Error('Wrong object format');
+    if (key === 'items' && !Array.isArray(obj[key])) {
+      throw new Error('Wrong object format');
+    }
+    //if find name then add new Leaf
     if (key === 'name') {
       treeStrings = addLeaf(treeStrings, obj[key]);
     } else {
+      // make connection in pre treeStrings
       treeStrings = treeConnect(treeStrings, key, obj, level);
+      // pass object to recursion
       treeStrings = leafFromObj(obj[key], {
         ...treeStrings,
         level: level + (key === 'items' ? 1 : 0),
@@ -67,7 +68,8 @@ const leafFromObj = (obj, treeStrings = { tree: [], level: 0, prefix: '' }) => {
   return treeStrings;
 };
 
-exports.printTree = (fpass) => {
-  const object = JSON.parse(fs.readFileSync(fpass).toString());
-  leafFromObj(object).tree.forEach((i) => console.log(i.join('')));
+exports.printTree = (object) => {
+  return leafFromObj(object)
+    .tree.map((i) => i.join('') + '\n')
+    .join('');
 };
